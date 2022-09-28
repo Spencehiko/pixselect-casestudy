@@ -27,7 +27,7 @@ const handlePageChange = async (newPage: number) => {
 };
 
 const goToDetailsPage = (movieId: number) => {
-    window.location.href = "/movie/" + movieId;
+    window.location.href = "/#/movie/" + movieId;
 };
 
 onMounted(async () => {

@@ -9,11 +9,11 @@ defineProps(["isAtHome", "isAtFav"]);
 
 const goToHomePage = () => {
     movieDetailId.value = -1;
-    window.location.href = "/";
+    window.location.href = "/#/";
 };
 
 const goToFavouritesPage = () => {
-    window.location.href = "/favourites";
+    window.location.href = "/#/favourite";
 };
 </script>
 

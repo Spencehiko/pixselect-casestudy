@@ -10,7 +10,7 @@ import { ElPagination } from "element-plus";
 import moment from "moment";
 
 const store = useMainStore();
-const { moviesList, isLoading, totalPages, pageNumber, searchQuery } = storeToRefs(store);
+const { moviesList, isLoading, totalPages, pageNumber, searchQuery, movieDetailId } = storeToRefs(store);
 const { updateMoviesList, startLoading, endLoading } = store;
 
 const handlePageChange = async (newPage: number) => {
@@ -24,6 +24,10 @@ const handlePageChange = async (newPage: number) => {
     }
     updateMoviesList(response);
     endLoading();
+};
+
+const goToDetailsPage = (movieId: number) => {
+    window.location.href = "/movie/" + movieId;
 };
 
 onMounted(async () => {
@@ -60,9 +64,9 @@ onMounted(async () => {
                 <td class="text-right pr-5">Vote Average</td>
             </tr>
             <tr v-for="(movie, index) in moviesList" :key="index" class="border-b my-1">
-                <td><img :src="movie.poster_path ? IMAGE_URL + movie.poster_path : 'default.png'" class="rounded-lg w-24 h-20 pl-5 py-1" /></td>
+                <td><img :src="movie.poster_path ? IMAGE_URL + movie.poster_path : 'default.png'" class="rounded-lg w-28 h-24 pl-5 py-2" /></td>
                 <td>
-                    <span class="font-bold text-ellipsis">{{ movie.title }}</span>
+                    <button class="font-bold text-ellipsis" @click="goToDetailsPage(movie.id)">{{ movie.title }}</button>
                 </td>
                 <td class="text-right">
                     <div>{{ moment(movie.release_date).format("DD/MM/YYYY") }}</div>
@@ -76,6 +80,7 @@ onMounted(async () => {
     </div>
     <el-pagination
         class="flex justify-center mt-10"
+        :class="{ 'blur-sm pointer-events-none select-none': isLoading }"
         background
         layout="prev, pager, next"
         :total="totalPages * 20"

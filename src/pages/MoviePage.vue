@@ -1,15 +1,9 @@
-<template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
-</template>
+<script setup lang="ts">
+import MovieDetails from "@/components/Movie/MovieDetails.vue";
+</script>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+<template>
+    <main class="py-10 px-20">
+        <MovieDetails />
+    </main>
+</template>

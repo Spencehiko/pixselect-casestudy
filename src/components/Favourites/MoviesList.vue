@@ -26,6 +26,7 @@ const goToDetailsPage = (movieId: number) => {
 };
 
 onMounted(() => {
+    favouritePageNumber.value = 1;
     favouriteMoviesToList.value = favouriteMovies.value.slice((favouritePageNumber.value - 1) * 20, favouritePageNumber.value * 20);
 });
 </script>
@@ -45,8 +46,6 @@ onMounted(() => {
         <span class="text-gray-200">Loading...</span>
     </div>
     <div :class="{ 'blur-sm pointer-events-none select-none': isLoading }">
-        {{ favouriteMovies.length }}
-        {{ favouriteMoviesToList.length }}
         <table class="w-full border-white overflow-scroll" v-if="favouriteMovies.length">
             <tr class="border-b">
                 <th class=""></th>

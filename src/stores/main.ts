@@ -8,6 +8,7 @@ export const useMainStore = defineStore({
         searchQuery: "" as string,
         totalPages: 0 as number,
         pageNumber: 1 as number,
+        favouritePageNumber: 1 as number,
         isLoading: false as boolean,
         movieDetailId: -1 as number,
     }),

@@ -30,12 +30,10 @@ const searchMovies = async () => {
         </div>
         <input
             v-model="searchQuery"
-            class="block p-4 pl-10 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white outline-none focus:border-blue-500"
+            class="block p-4 pl-10 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 outline-none focus:border-blue-500"
             placeholder="Search Movies"
             required
         />
-        <button :disabled="isLoading" @click="searchMovies" class="absolute text-white font-medium rounded-lg text-sm px-4 py-2 right-2.5 bottom-2.5 bg-blue-500 outline-none hover:bg-blue-600">
-            Search
-        </button>
+        <button :disabled="isLoading" @click="searchMovies" class="absolute font-medium rounded-lg text-sm px-4 py-2 right-2.5 bottom-2.5 bg-blue-500 outline-none hover:bg-blue-600">Search</button>
     </div>
 </template>

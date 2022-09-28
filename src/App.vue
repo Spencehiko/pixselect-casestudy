@@ -20,5 +20,5 @@ watch(
 </script>
 
 <template>
-    <RouterView class="bg-slate-900 w-full min-h-screen" />
+    <RouterView class="bg-slate-900 text-white w-full min-h-screen" />
 </template>

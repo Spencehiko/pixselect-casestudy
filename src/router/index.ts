@@ -14,8 +14,8 @@ const router = createRouter({
             component: () => import("@/pages/MoviePage.vue"),
         },
         {
-            path: "/favourite",
-            name: "favourite",
+            path: "/favourites",
+            name: "favourites",
             component: () => import("@/pages/FavouritePage.vue"),
         },
     ],

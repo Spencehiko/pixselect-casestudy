@@ -1,28 +1,23 @@
 <script setup lang="ts">
 import { useMainStore } from "@/stores/main";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
-import { apiGetPopularMovies, apiSearchMovies } from "@/requests";
 import { IMAGE_URL } from "@/constants";
 
 import { ElPagination } from "element-plus";
 import moment from "moment";
 
 const store = useMainStore();
-const { moviesList, isLoading, totalPages, pageNumber, searchQuery } = storeToRefs(store);
-const { updateMoviesList, startLoading, endLoading, isFavourite, removeFromFavourites, addToFavourites } = store;
+const { favouriteMovies, isLoading, favouritePageNumber } = storeToRefs(store);
+const { startLoading, endLoading, isFavourite, removeFromFavourites, addToFavourites } = store;
+
+const favouriteMoviesToList = ref([] as any);
 
 const handlePageChange = async (newPage: number) => {
-    pageNumber.value = newPage;
     startLoading();
-    let response;
-    if (!searchQuery.value.length) {
-        response = await apiGetPopularMovies();
-    } else {
-        response = await apiSearchMovies();
-    }
-    updateMoviesList(response);
+    favouritePageNumber.value = newPage;
+    favouriteMoviesToList.value = favouriteMovies.value.slice((newPage - 1) * 20, newPage * 20);
     endLoading();
 };
 
@@ -30,14 +25,8 @@ const goToDetailsPage = (movieId: number) => {
     window.location.href = "/movie/" + movieId;
 };
 
-onMounted(async () => {
-    if (moviesList.value.length === 0) {
-        startLoading();
-        pageNumber.value = 1;
-        const response = await apiGetPopularMovies();
-        updateMoviesList(response);
-        endLoading();
-    }
+onMounted(() => {
+    favouriteMoviesToList.value = favouriteMovies.value.slice((favouritePageNumber.value - 1) * 20, favouritePageNumber.value * 20);
 });
 </script>
 
@@ -56,7 +45,9 @@ onMounted(async () => {
         <span class="text-gray-200">Loading...</span>
     </div>
     <div :class="{ 'blur-sm pointer-events-none select-none': isLoading }">
-        <table class="w-full border-white overflow-scroll" v-if="moviesList.length">
+        {{ favouriteMovies.length }}
+        {{ favouriteMoviesToList.length }}
+        <table class="w-full border-white overflow-scroll" v-if="favouriteMovies.length">
             <tr class="border-b">
                 <th class=""></th>
                 <th class="text-left py-1">Title</th>
@@ -65,7 +56,7 @@ onMounted(async () => {
                 <th class="text-right pr-5 py-1">Vote Average</th>
                 <th class="text-right pr-5 py-1">Vote Count</th>
             </tr>
-            <tr v-for="(movie, index) in moviesList" :key="index" class="border-b my-1">
+            <tr v-for="(movie, index) in favouriteMoviesToList" :key="index" class="border-b my-1">
                 <td><img :src="movie.poster_path ? IMAGE_URL + movie.poster_path : 'default.png'" class="rounded-lg w-28 h-32 pl-5 py-2" /></td>
                 <td>
                     <button class="font-bold text-ellipsis" @click="goToDetailsPage(movie.id)">{{ movie.title }}</button>
@@ -92,17 +83,17 @@ onMounted(async () => {
                 </td>
             </tr>
         </table>
-        <div v-else class="text-center font-bold">No movies found. Please search again</div>
+        <div v-else class="text-center font-bold">No movies found. First, add some movies to favourites</div>
     </div>
     <el-pagination
         class="flex justify-center mt-10"
         :class="{ 'blur-sm pointer-events-none select-none': isLoading }"
         background
         layout="prev, pager, next"
-        :total="totalPages * 20"
+        :total="favouriteMovies.length"
         :page-size="20"
         :hide-on-single-page="true"
-        :current-page="pageNumber"
+        :current-page="favouritePageNumber"
         @current-change="handlePageChange"
     />
 </template>

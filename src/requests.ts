@@ -19,6 +19,12 @@ export const apiGetMovieDetails = (movieId: number) => {
         .then((data) => data);
 };
 
+export const apiGetMovieCredits = (movieId: number) => {
+    return fetch(`${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`)
+        .then((response) => response.json())
+        .then((data) => data);
+};
+
 export const apiSearchMovies = () => {
     return fetch(`${API_URL}search/movie?api_key=${API_KEY}&query=${searchQuery.value}&page=${pageNumber.value}`)
         .then((response) => response.json())
